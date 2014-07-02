@@ -2,3 +2,4 @@ node_modules
 .DS_Store
 .svn
 .DS_Store
+models/db.js

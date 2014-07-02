@@ -7,27 +7,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-<!--header-->
-<div class="header">
-    <div class="header-bar clearfix">
-        <!--logo-->
-        <div class="logo fl">
-            <h1>LOGO</h1>
-        </div>
-        <!--menu-->
-        <div class="menu fr">
-            <% if(locals.user){ %>
-            <a href="/<%= locals.user.uid %>">我的主页</a>
-            <a href="/logout">退出</a>
-            <% } else { %>
-            <a href="/">注册</a>
-            <a href="/login">登录</a>
-            <% } %>
-        </div>
-        <!--menu end-->
-    </div>
-</div>
-<!--header end-->
 <% if (locals.success) { %>
 <div >
     <%= locals.success %>

@@ -17,7 +17,7 @@ var loginChect = {
 	login: function(req, res, next){
 		if(!req.session.user){
 			req.flash('error', '未登录!');
-			return res.redirect('/admin/login');
+			return res.redirect('/admin');
 		}
 		next();
 	}
@@ -49,15 +49,12 @@ module.exports = function(app){
 	});
 
 	app.post('/admin', function(req, res){
-		var userName = req.body['username']
-		var userPwd = req.body['password']
-		var md5 = crypto.createHash('md5');
-
 		//生成密码的 md5 值
 		var md5 = crypto.createHash('md5'),
 		password = md5.update(req.body.password).digest('hex');
 
-		User.get(req.body.name, function (err, user) {
+		var userModel = new User();
+		userModel.get(req.body.name, function (err, user) {
 			if (!user) {
 				req.flash('error', '用户不存在!'); 
 				return res.redirect('/admin');
@@ -73,18 +70,60 @@ module.exports = function(app){
 			res.redirect('/admin/list');
 		});
 	});
+	app.get('/admin/adduser', function(req, res){
+		adminRender(req, res, {
+			template: 'reg'
+		});
+	});
+	app.post('/admin/adduser', function(req, res){
+		//密码加密
+		var md5 = crypto.createHash('md5');
+		var password = md5.update(req.body.password).digest('base64');
 
+		var newUser = {
+			name: req.body.username,
+			password: password
+		};
+
+		var userModel = new User(newUser);
+
+		//查询数据库存在此用户名
+		User.get(newUser.name, function(err, user){
+			if(user){
+				err = '用户已存在';
+			}
+			if(err){
+				req.flash('error', err);
+				return res.redirect('/admin');
+			}
+
+			userModel.save(function(err){
+				if(err){
+					req.flash('error',err);
+					return res.redirect('/admin');
+				}
+				//session里储存用户名
+				req.session.user = newUser;
+				req.flash('success','注册成功');
+				res.redirect('/admin');
+			});
+		});
+
+
+	});
+
+	app.get('/admin/list', loginChect.notLogin);
 	// 文章列表
 	app.get('/admin/list', function(req, res) {
-
 		//判断是否是第一页，并把请求的页数转换成 number 类型
 		var page = req.query.p ? parseInt(req.query.p) : 1;
 
 		//查询并返回第 page 页的 10 篇文章
-		Post.get(null, page, function (err, posts, total) {
+		Post.get(10, page, function (err, posts, total) {
 			if (err) {
 				posts = [];
 			}
+
 			adminRender(req, res, {
 				template: 'list',
 				posts: posts,
@@ -96,7 +135,7 @@ module.exports = function(app){
 
 		});
 
-		
+
 	})
 
 

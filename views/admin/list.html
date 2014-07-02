@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="/css/list.css"/>
+
+<div class="m-list">
+	<ul>
+		<% posts.forEach(function (post) { %>
+		<li><%= post.title %> <a href="<%= post.name %>">修改</a></li>
+		<% }); %>
+	</ul>
+	<div class="m-page-box">
+		共<%= page %>页
+	</div>
+</div>

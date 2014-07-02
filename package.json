@@ -18,7 +18,6 @@
     "method-override": "*",
     "express-partials": "*",
     "ejs": "*",
-    "less": "*",    
     "connect-mongo":"*",
     "connect-flash":"*",
     "wxchat": "*",

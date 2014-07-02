@@ -1,0 +1,50 @@
+.textOverflow {
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+body {
+	background:#f1f1f1
+}
+#login {
+	margin:10% auto 0;
+	width:400px;
+	padding:0 20px 20px 20px
+}
+#login h3 {
+	margin-bottom:15px;
+	font-size:2rem;
+	font-family:tahoma
+}
+#login .inp {
+	padding:5px
+}
+#login .inp strong {
+	display:block;
+	margin-bottom:10px;
+	font-size:.95rem;
+	color:#444
+}
+#login .inp input {
+	-moz-border-radius:3px 3px 3px 3px;
+	-webkit-border-radius:3px 3px 3px 3px;
+	border-radius:3px 3px 3px 3px;
+	border:1px solid #ddd;
+	padding:10px;
+	width:270px
+}
+#login .sub-btn {
+	padding-top:10px;
+	padding-left:6px
+}
+#login .sub-btn input {
+	-moz-border-radius:3px 3px 3px 3px;
+	-webkit-border-radius:3px 3px 3px 3px;
+	border-radius:3px 3px 3px 3px;
+	border:0 none;
+	padding:10px 25px;
+	background:#f60;
+	font-size:.9rem;
+	font-weight:bold;
+	color:#fff
+}

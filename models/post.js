@@ -77,11 +77,11 @@ Post.prototype.save = function(callback) {
  */
 Post.get = function(num, page, callback) {
 	//根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
-	var query = postModel
+	var query = postModel.find()
 		.skip((page - 1)*num)
 		.limit(num)
 		.sort({time: -1})
-		.run(function(err, posts){
+		.exec(function(err, posts){
 			if(err){
 				return callback(err);
 			}

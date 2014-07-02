@@ -30,10 +30,12 @@ var compression = require('compression')
 app.use(compression());
 
 // store session state in browser cookie
-var cookieSession = require('cookie-session')
-app.use(cookieSession({
-    keys: [settings.cookieSecret]
-}));
+var cookieSession = require('cookie-session')({
+	name: settings.db,
+	secret: settings.cookieSecret,
+	maxAge: 1000 * 60 * 60 * 24 * 30
+})
+app.use(cookieSession);
 
 // parse urlencoded request bodies into req.body
 var bodyParser = require('body-parser')

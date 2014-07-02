@@ -3,3 +3,4 @@ node_modules
 .svn
 .DS_Store
 setting.js
+setting.*

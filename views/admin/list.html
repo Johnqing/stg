@@ -1,12 +1,16 @@
 <link rel="stylesheet" href="/css/list.css"/>
 
 <div class="m-list">
-	<ul>
-		<% posts.forEach(function (post) { %>
-		<li><%= post.title %> <a href="<%= post.name %>">修改</a></li>
-		<% }); %>
-	</ul>
-	<div class="m-page-box">
-		共<%= page %>页
-	</div>
+	<% if (posts.length > 0) { %>
+		<ul>
+			<% posts.forEach(function (post) { %>
+			<li><%= post.title %> <a href="<%= post.name %>">修改</a></li>
+			<% }); %>
+		</ul>
+		<div class="m-page-box">
+			共<%= page %>页
+		</div>
+	<% } else { %>
+	<div class="tips">还没有任何文章哦~，快去<a href="/admin/addpost">创建</a>吧！</div>
+	<% } %>
 </div>

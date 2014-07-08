@@ -1,5 +1,4 @@
 var util = require('../lib/util');
-var crypto = require('crypto');
 var User = require('../models/user');
 var Post = require('../models/post')
 /**
@@ -10,14 +9,14 @@ var loginChect = {
 	notLogin: function(req, res, next){
 		if(req.session.user){
 			req.flash('error', '已经登录!');
-			return res.redirect('/admin');
+			return res.redirect('/admin/list');
 		}
 		next();
 	},
 	login: function(req, res, next){
 		if(!req.session.user){
 			req.flash('error', '未登录!');
-			return res.redirect('/admin');
+			return res.redirect('/');
 		}
 		next();
 	}
@@ -49,12 +48,9 @@ module.exports = function(app){
 	});
 
 	app.post('/admin', function(req, res){
-		//生成密码的 md5 值
-		var md5 = crypto.createHash('md5'),
-		password = md5.update(req.body.password).digest('hex');
 
-		var userModel = new User();
-		userModel.get(req.body.name, function (err, user) {
+		var password = util.md5(req.body.password);
+		User.get(req.body.name, function (err, user) {
 			if (!user) {
 				req.flash('error', '用户不存在!'); 
 				return res.redirect('/admin');
@@ -76,10 +72,7 @@ module.exports = function(app){
 		});
 	});
 	app.post('/admin/adduser', function(req, res){
-		//密码加密
-		var md5 = crypto.createHash('md5');
-		var password = md5.update(req.body.password).digest('base64');
-
+		var password = util.md5(req.body.password);
 		var newUser = {
 			name: req.body.username,
 			password: password
@@ -112,7 +105,7 @@ module.exports = function(app){
 
 	});
 
-	app.get('/admin/list', loginChect.notLogin);
+	app.get('/admin/list', loginChect.login);
 	// 文章列表
 	app.get('/admin/list', function(req, res) {
 		//判断是否是第一页，并把请求的页数转换成 number 类型
@@ -134,9 +127,29 @@ module.exports = function(app){
 			});
 
 		});
+	});
+	// 创建文章
+	app.get('/admin/addpost', function(req, res){
+		adminRender(req, res, {
+			template: 'add_post'
+		});
+	});
+
+	app.post('/admin/addpost', function(req, res){
+		//要存入数据库的文档
+		var post = {
+			name: req.session.user,
+			head: 'wx',
+			title: req.body.title,
+			post: req.body.post
+		};
+
+		var post = new Post(post);
 
 
-	})
+
+	});
+
 
 
 }

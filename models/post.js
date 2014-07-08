@@ -25,12 +25,12 @@ var postModel = mongoose.model('Post', postSchema);
  * post类
  * @param {[type]} post
  */
-function Post(name, head, title, tags, post) {
-	this.name = name;
-	this.head = head;
-	this.title = title;
-	this.tags = tags || 'default';
-	this.post = post;
+function Post(options) {
+	this.name = options.name;
+	this.head = options.head;
+	this.title = options.title;
+	this.tags = options.tags || 'default';
+	this.post = options.post;
 }
 
 module.exports = Post;

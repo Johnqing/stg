@@ -2,5 +2,4 @@ node_modules
 .DS_Store
 .svn
 .DS_Store
-setting.js
 db

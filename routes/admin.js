@@ -145,7 +145,15 @@ module.exports = function(app){
 		};
 
 		var post = new Post(post);
+		post.save(function(err){
+			if(err){
+				req.flash('error',err);
+				return res.redirect('/admin/addpost');
+			}
 
+			req.flash('success','添加文章成功！');
+			res.redirect('/admin/addpost');
+		});
 
 
 	});

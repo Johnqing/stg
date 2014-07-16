@@ -1,4 +1,3 @@
-var crypto = require('crypto');
 var mongoose = require('./db')
 var Schema = mongoose.Schema;
 /**
@@ -30,8 +29,6 @@ function User(user) {
  * @return {[type]}
  */
 User.prototype.save = function(callback) {
-	var md5 = crypto.createHash('md5');
-
 	var user = {
 		name: this.name,
 		password: this.password

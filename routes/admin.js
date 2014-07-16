@@ -48,7 +48,6 @@ module.exports = function(app){
 	});
 
 	app.post('/admin', function(req, res){
-
 		var password = util.md5(req.body.password);
 		User.get(req.body.name, function (err, user) {
 			if (!user) {
@@ -77,7 +76,6 @@ module.exports = function(app){
 			name: req.body.username,
 			password: password
 		};
-
 		var userModel = new User(newUser);
 
 		//查询数据库存在此用户名

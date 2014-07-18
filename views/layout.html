@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><%= config.webname %></title>
+	<link rel="stylesheet" href="/css/bootstrap.css"/>
+	<link rel="stylesheet" href="/css/style.css"/>
+	<!--[if lt IE 9]>
+      <script src="/js/html5shiv.js"></script>
+   <![endif]-->
+   <!--[if lte IE 7]>
+      <script src="/js/kill-ie6.js"></script>
+   <![endif]-->
+	<script src="/js/libs/editor/kindeditor-min.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/libs/sh/sh.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/js/libs/sh/sh.css" />
+</head>
+<body>
+	<header class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a href="/" class="brand"><%= config.webname %></a>
+				<nav class="nav-collapse">
+					<ul class="nav">
+						<li class="divider-vertical"></li>
+						<li>
+							<a href="/">首页</a>
+						</li>
+						<% if(locals.userinfo){ %>
+						<li>
+							<a href="/user_view/<%= locals.user.user_name %>"><%= locals.userinfo.user_name %></a>
+						</li>
+						<li>
+		                     <a href="/change_password/<%= locals.user._id %>">设置</a>
+	                    </li>
+	                    <% if(locals.userinfo.is_admin){ %>
+							<li>
+								<a href="/user_views">管理用户</a>
+							</li>
+						<% } %>
+						<li>
+							<a href="/login_out">注销</a>
+						</li>
+						<% }else{ %>
+						<li>
+							<a href="/login">登录</a>
+						</li>
+						<li>
+							<a href="/user_add">注册</a>
+						</li>
+						<% } %>
+						<li class="divider-vertical"></li>
+					</ul>
+				</nav>
+				<form action="/search" class="navbar-search">
+					<input id="q" name="q" type="text" placeholder="搜索..." class="search-query span3" />
+				</form>
+			</div>
+		</div>
+	</header>
+	<div class="main container">
+		<%- body %>
+	</div>
+	<footer class="modal-footer">
+		<div class="container">
+			<p>
+				基于 
+				<a href="http://nodejs.org/">NodeJs</a>
+				+ 
+				<a href="http://www.mongodb.org/">MongoDB</a>
+				构建
+			</p>
+		</div>
+	</footer>
+</body>
+</html>

@@ -2,14 +2,14 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , settings = require('./setting')
+  , config = require('./setting').config
   , flash = require('connect-flash');
 
 var app = express();
 
 //所有环境下
 //设置端口
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || config.port);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
 app.engine('.html', require('ejs').__express);
@@ -31,8 +31,7 @@ app.use(compression());
 
 // store session state in browser cookie
 var cookieSession = require('cookie-session')({
-	name: settings.db,
-	secret: settings.cookieSecret,
+	secret: config.session_secret,
 	maxAge: 1000 * 60 * 60 * 24 * 30
 })
 app.use(cookieSession);
@@ -55,13 +54,17 @@ var errorhandler = require('errorhandler');
 if(env == 'development'){
 	app.use(errorhandler());
 }
-
 //路由
 routes(app);
 
+// helper
+app.locals.config = config;
+
+// 页面日志处理
 app.use(function(req, res, next){
 	var err = req.flash('error')
 	, success = req.flash('success');
+
 	res.locals.user = req.session.user;
 	res.locals.error = err.length ? err : null;
 	res.locals.success = success.length ? success : null;

@@ -20,6 +20,8 @@
     "ejs": "*",
     "connect-mongo":"*",
     "connect-flash":"*",
+    "eventproxy": "*",
+	"validator": "0.3.7",
     "wxchat": "*",
     "mongoose": "*"
   },

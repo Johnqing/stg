@@ -25,7 +25,7 @@ exports.index = function(req, res, next){
 	var limit = 15;
 
 	var render = function (articles, pages){
-		res.locals.user = req.session.user
+		res.locals.user = req.session.user;
 		res.render('index', {
 			articles: articles,
 			current_page: currentPage,
@@ -35,7 +35,7 @@ exports.index = function(req, res, next){
 	}
 
 	var proxy = new EventProxy();
-	proxy.assign('articles', 'pages', render);
+	proxy.all('articles', 'pages', render);
 
 	var where = {};
 	var options = {
@@ -43,17 +43,17 @@ exports.index = function(req, res, next){
 		limit: limit
 	}
 
-	Article.get(where, options, function(err, articles){
+	Article.get(options, function(err, articles){
 		if(err)
 			return next(err);
 		articlesTran(articles);
-		proxy.trigger('articles', articles);
+		proxy.emit('articles', articles);
 	})
 
 	Article.getCounts(where, function(err, cont){
 		if(err) return next(err);
 		var pages = Math.ceil(cont / limit);
-		proxy.trigger('pages', pages);
+		proxy.emit('pages', pages);
 	})
 
 }

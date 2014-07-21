@@ -16,6 +16,8 @@ module.exports = function(app){
 	app.get('/article_add', article.add);
 	app.post('/article_add', article.add);
 
+	app.get('/article_view/:id', article.article_view);
+
 
 
 

@@ -2,7 +2,6 @@
  * Created by liuqing on 14-7-18.
  */
 var url = require('url');
-var EventProxy = require('eventproxy');
 
 var Util = require('../lib/util');
 

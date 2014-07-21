@@ -12,9 +12,8 @@
 		<% if(locals.action && locals.action == 'article_edit'){ %>
 			<form class="form-horizontal" id="create_article_form" action="/article_edit/<%= article_id%>" method="post">
 		<% }else{ %>
-			<form class="form-horizontal" id="create_article_form" action="/article_create" method="post">
+			<form class="form-horizontal" id="create_article_form" action="/article_add" method="post">
 		<% } %>
-		    <input type="hidden" name="_csrf" value="<%= _csrf%>" />
 		    <% if(locals.tags && locals.tags.length>0){ %>
 		    	<input type="hidden" name="tags_ids" id="tags_ids" value="" />
 		    	<div class="control-group">

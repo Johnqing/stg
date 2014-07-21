@@ -25,6 +25,7 @@ exports.index = function(req, res, next){
 	var limit = 15;
 
 	var render = function (articles, pages){
+		res.locals.user = req.session.user
 		res.render('index', {
 			articles: articles,
 			current_page: currentPage,

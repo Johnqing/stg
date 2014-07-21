@@ -29,14 +29,14 @@
 						<li>
 							<a href="/">首页</a>
 						</li>
-						<% if(locals.userinfo){ %>
+						<% if(locals.user){ %>
 						<li>
-							<a href="/user_view/<%= locals.user.user_name %>"><%= locals.userinfo.user_name %></a>
+							<a href="/user_view/<%= locals.user.user_name %>"><%= locals.user.user_name %></a>
 						</li>
 						<li>
 		                     <a href="/change_password/<%= locals.user._id %>">设置</a>
 	                    </li>
-	                    <% if(locals.userinfo.is_admin){ %>
+	                    <% if(locals.user.is_admin){ %>
 							<li>
 								<a href="/user_views">管理用户</a>
 							</li>

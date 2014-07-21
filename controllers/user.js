@@ -12,7 +12,28 @@ var User = require('../models/user');
 var check = require('validator').check,
 	sanitize = require('validator').sanitize;
 
+/**
+ * 设置缓存
+ * @param user
+ * @param req
+ * @param res
+ */
+function setCache(user, req, res){
+	var auth_token = Util.encrypt(user._id + '\t' + user.user_name + '\t' + user.password + '\t' + user.email, config.session_secret);
+	res.cookie(config.auth_cookie_name, auth_token, {
+		path: '/',
+		maxAge: 1000 * 60 * 60
+	});
+	req.session.user = user;
+	req.session.cookie.maxAge = 1000 * 60 * 60;
+}
 
+/**
+ * 注册
+ * @param req
+ * @param res
+ * @param next
+ */
 exports.add = function(req, res, next){
 	var method = req.method.toLowerCase();
 	if(method === 'get'){
@@ -76,7 +97,7 @@ exports.add = function(req, res, next){
 			if(err) return next(err);
 
 			if(userRow){
-				req.session.userinfo = userRow;
+				setCache(userRow, req, res);
 				res.redirect('/');
 			}else{
 				res.render('login',{error: '没有此用户，或已被删除'});
@@ -87,7 +108,12 @@ exports.add = function(req, res, next){
 	});
 
 }
-
+/**
+ * 登录
+ * @param req
+ * @param res
+ * @param next
+ */
 exports.login = function(req, res, next){
 	var method = req.method.toLowerCase();
 	if(method === 'get'){
@@ -123,8 +149,20 @@ exports.login = function(req, res, next){
 			});
 			return
 		}
-		req.session.userinfo = user;
+		setCache(user, req, res);
 		res.redirect('/');
 	});
 
 }
+/**
+ * 退出
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.login_out = function(req, res, next){
+	req.session = null;
+	res.clearCookie(config.auth_cookie_name, {path: '/'});
+	res.redirect('/');
+}
+

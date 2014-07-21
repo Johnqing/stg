@@ -29,12 +29,12 @@ app.use(morgan());
 var compression = require('compression')
 app.use(compression());
 
-// store session state in browser cookie
-var cookieSession = require('cookie-session')({
+// session
+var session = require('express-session')({
 	secret: config.session_secret,
 	maxAge: 1000 * 60 * 60 * 24 * 30
 })
-app.use(cookieSession);
+app.use(session);
 
 // parse urlencoded request bodies into req.body
 var bodyParser = require('body-parser')

@@ -10,7 +10,7 @@ module.exports = function(app){
 	app.post('/user_add', user.add);
 	app.get('/login', user.login);
 	app.post('/login', user.login);
-//	app.get('/login_out', user.login_out);
+	app.get('/login_out', user.login_out);
 
 	// article
 	app.get('/article_add', article.add);

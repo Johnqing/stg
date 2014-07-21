@@ -1,8 +1,8 @@
 <header>
    <nav class="tag_list">
       <ul class="nav nav-pills">
-			<% if(locals.userinfo){ %>
-				<% if(locals.userinfo.is_admin){ %>
+			<% if(locals.user){ %>
+				<% if(locals.user.is_admin){ %>
 					<li>
 						<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
 					</li>

@@ -66,7 +66,6 @@ Article.getUnion = function(query, callback) {
 	var proxy = new EventProxy();
 
 	var done = function(article, author){
-		console.log('1111');
 		return callback(null, article, author);
 	};
 
@@ -98,8 +97,15 @@ Article.getUnion = function(query, callback) {
  * @param opts
  * @param callback
  */
-Article.get = function(opts, callback){
-	articleModel.find({}, null, opts, function(err, docs){
+Article.get = function(where, opts, callback){
+	// fixed
+	if(typeof opts == 'function'){
+		callback = opts;
+		opts = where;
+		where = {}
+	}
+	// check
+	articleModel.find(where, null, opts, function(err, docs){
 		if(err)
 			return callback(err);
 

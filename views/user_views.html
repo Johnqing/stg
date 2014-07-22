@@ -40,10 +40,10 @@
 								<p><%=user.email %></p>
 							</td>
 							<td>
-								<time pudate datetime="<%=user.create_at %>"><%=user.create_at %></time>
+								<time pudate datetime="<%=user.create_at %>"><%=user.createTime %></time>
 							</td>
 							<td>
-								<time pudate datetime="<%=user.update_time%>"><%=user.update_time%></time>
+								<time pudate datetime="<%=user.update_time%>"><%=user.updateTime%></time>
 							</td>
 							<td>
 								<% if(user.edit){ %>
@@ -65,11 +65,7 @@
 		</table>
 		<div class="pagination pull-right">
 			<% var pages_url = base_url + '?' + 'page='; %>
-			<%- partial('page_layout', {
-				pages: pages,
-				pages_url: pages_url,
-				current_page: current_page
-			}) %>
+			<% include page_layout.html %>
 		</div>
 	</div>
 </div>
@@ -84,4 +80,3 @@
 	 	});
 	 });
 </script>
-<%- partial('side_bar') %>

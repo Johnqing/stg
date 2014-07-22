@@ -16,8 +16,8 @@
 						<%=article.create_at %>
 					</time>
 				</span>
-				<% if(locals.current_user){ %>
-					<% if(locals.current_user.is_admin || locals.current_user.user_name == article.author.user_name){ %>
+				<% if(locals.user){ %>
+					<% if(locals.user.isAdmin || locals.user.user_name == article.author.user_name){ %>
 					<div class="pull-right article_opera">
 						<a href="/article_edit/<%= article._id%>" title="修改"><i class="icon-pencil"></i></a>
 						<a href="/article_del/<%= article._id%>" title="删除"><i class="icon-trash"></i></a>

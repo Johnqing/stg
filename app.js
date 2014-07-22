@@ -29,12 +29,16 @@ app.use(morgan());
 var compression = require('compression')
 app.use(compression());
 
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
 // session
 var session = require('express-session')({
 	secret: config.session_secret,
 	maxAge: 1000 * 60 * 60 * 24 * 30
 })
 app.use(session);
+// 中间件
+app.use(require('./controllers/user').authUser);
 
 // parse urlencoded request bodies into req.body
 var bodyParser = require('body-parser')
@@ -44,7 +48,7 @@ var methodOverride = require('method-override')
 app.use(methodOverride());
 
 var serveStatic = require('serve-static')
-app.use(serveStatic(path.join(__dirname, '/assets')));
+app.use(serveStatic(path.join(__dirname, 'assets')));
 // 4.0 del
 // app.use(app.router);
 //开发环境

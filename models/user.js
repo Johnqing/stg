@@ -1,3 +1,5 @@
+var Util = require('../lib/util');
+
 var mongoose = require('./db')
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -54,7 +56,7 @@ User.prototype.save = function(callback) {
 	});
 };
 /**
- * 通过name获取密码
+ * 获取单个用户
  * @param  {[type]}   query
  * @param  {Function} callback
  * @return {[type]}
@@ -67,5 +69,42 @@ User.get = function(query, callback) {
 		callback(null, user);
 	});
 };
+
+/**
+ * 通过query查询符合条件的user
+ * @param where
+ * @param query
+ * @param callback
+ */
+User.getAll = function(where, query, callback){
+	userModel.find(where, null, query, function(err, users){
+		if(err)
+			return callback(err);
+
+		if(!users.length)
+			return callback('Not have users!');
+
+		var userArr = [];
+
+		for(var i= 0, len=users.length; i<len; i++){
+			userArr.push(users[i]._doc);
+		}
+
+		callback(null, userArr);
+	});
+}
+/**
+ * 用户数量
+ * @param where
+ * @param callback
+ */
+User.getCounts = function(where, callback){
+	userModel.count(where, function(err, count){
+		if(err)
+			return callback(err);
+		callback(null, count);
+	});
+}
+
 
 module.exports = User;

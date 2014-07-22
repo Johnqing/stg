@@ -24,7 +24,6 @@ exports.add = function(req, res, next){
 	if(!req.session.user)
 		return res.redirect('/login');
 
-	res.locals.user = req.session.user;
 	var method = req.method.toLowerCase();
 	if(method == 'get'){
 		res.render('article_edit');
@@ -70,7 +69,7 @@ exports.add = function(req, res, next){
  * @param res
  * @param next
  */
-exports.article_view = function(req, res, next){
+exports.view = function(req, res, next){
 	// 未登录，重定向到登陆页
 	if(!req.session.user)
 		return res.redirect('/login');
@@ -78,7 +77,6 @@ exports.article_view = function(req, res, next){
 
 	var id = req.params.id;
 
-	res.locals.user = req.session.user;
 	var render = function(art){
 		res.render('article_view', {
 			article: art
@@ -107,6 +105,153 @@ exports.article_view = function(req, res, next){
 
 		art.author = author;
 		render(art);
+	})
+
+}
+/**
+ * 编辑
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+exports.edit = function(req, res, next){
+	if(!req.session.user)
+		return res.redirect('/login');
+
+	var id = req.params.id;
+
+	if(id.length != 24){
+		res.render('error', {
+			error: '无此信息或已被删除！'
+		});
+	}
+
+	var method = req.method.toLowerCase();
+	if(method == 'get'){
+
+		Article.getUnion({
+			_id: id
+		}, function(err, art, user){
+			if(err)
+				return next(err);
+
+			if(!art)
+				return res.render('error', {error: '无此信息或已被删除！'});
+
+			if(art.author_id != req.session.user._id || !req.session.user.isAdmin){
+				res.render('error', {
+					error: '对不起，你不能编辑此文章！'
+				});
+				return
+			}
+
+			res.render('article_edit', {
+				action: 'article_edit',
+				article_id: art._id,
+				title: art.title,
+				content: art.content
+			});
+
+		})
+		return
+	}
+	// post
+	var title = sanitize(req.body.title).trim();
+	var content = req.body.content;
+
+	if(!title){
+		res.render('article_edit', {
+			error: '标题不能为空',
+			content: content
+		});
+		return
+	}
+
+	if(!content){
+		res.render('article_edit', {
+			error: '内容不能为空',
+			title: title
+		});
+		return
+	}
+
+
+	Article.getUnion({
+		_id: id
+	}, function(err, art){
+		if(err)
+			return next(err);
+
+		if(!art)
+			return res.render('error', {error: '无此信息或已被删除！'});
+
+		if(art.author_id != req.session.user._id || !req.session.user.isAdmin){
+			res.render('error', {
+				error: '对不起，你不能编辑此文章！'
+			});
+			return
+		}
+
+		art.title = title;
+		art.content = content;
+		art.update_at = Date.now();
+		art.edit_id = req.session.user._id;
+
+		art.save(function(err){
+			if(err)
+				return next(err);
+
+			res.redirect('/');
+		});
+
+	})
+
+
+}
+/**
+ * 删除文章
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.del = function(req, res, next){
+	if(!req.session.user){
+		res.redirect('/login');
+		return;
+	}
+
+	var id = req.params.id;
+
+	if(id.length != 24){
+		res.render('error', {
+			error: '没有此用户，或已被删除！'
+		});
+		return;
+	}
+
+	Article.getUnion({
+		_id: id
+	}, function(err, art){
+		if(err)
+			return next(err);
+
+		if(!art)
+			return res.render('error', {error: '无此信息或已被删除！'});
+
+		if(art.author_id != req.session.user._id || !req.session.user.isAdmin){
+			res.render('error', {
+				error: '对不起，你不能删除此文章！'
+			});
+			return
+		}
+
+		art.remove(function(err){
+			if(err)
+				return next(err);
+			res.redirect('/');
+		});
+
 	})
 
 }

@@ -11,6 +11,7 @@
     "morgan": "*",
     "errorhandler": "*",
     "compression": "*",    
+    "cookie-parser": "*",
     "express-session": "*",
     "body-parser": "*",
     "serve-favicon": "*",

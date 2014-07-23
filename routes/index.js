@@ -1,6 +1,7 @@
 var site = require('../controllers/site');
 var article = require('../controllers/article');
 var user = require('../controllers/user');
+var upload = require('../controllers/upload');
 module.exports = function(app){
 	// index
 	app.get('/', site.index);
@@ -36,6 +37,11 @@ module.exports = function(app){
 	//edit
 	app.get('/article_edit/:id', article.edit);
 	app.post('/article_edit/:id', article.edit);
+
+
+	// uploadImg
+	app.get('/uploadImg', upload.html);
+	app.post('/uploadImg', upload.img);
 
 
 

@@ -23,7 +23,7 @@
     "connect-flash":"*",
     "eventproxy": "*",
 	"validator": "0.3.7",
-    "wxchat": "*",
+    "multer": "*",
     "mongoose": "*"
   },
   "engines": {

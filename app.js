@@ -3,7 +3,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , config = require('./setting').config
-  , flash = require('connect-flash');
+  , flash = require('connect-flash')
+  , multer  = require('multer')
 
 var app = express();
 
@@ -42,7 +43,10 @@ app.use(require('./controllers/user').authUser);
 
 // parse urlencoded request bodies into req.body
 var bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded());
+
+//
+app.use(multer({ dest: './assets/upload'}))
 
 var methodOverride = require('method-override')
 app.use(methodOverride());

@@ -44,7 +44,19 @@ exports.img = function(req, res, next){
 		if (err) {
 			return next(err);
 		}
-		var url = '/upload/' + userName + '/' + encodeURIComponent(filename);
+		var url = getUploadPath(userDir) + encodeURIComponent(filename);
 		res.send({error: '0', url: url});
 	});
+}
+/**
+ * 上传目录解析
+ * @param def
+ * @returns {string}
+ */
+function getUploadPath(def){
+	var dirname = path.dirname(__dirname);
+	var url = def.replace(dirname + path.sep, '').split(path.sep);
+	url.shift();
+	url = url.join('/');
+	return '/' + url + '/'
 }

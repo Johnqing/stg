@@ -6,7 +6,7 @@ exports.config = {
 
 	session_secret: 'stg',
 	auth_cookie_name: 'stg',
-	upload_dir : path.join(__dirname, 'assets', 'upload'),
+	upload_dir : path.join(__dirname, 'assets', 'upload', 'img'),
 	// 管理员聚合
 	admins: {
 		admin: true
